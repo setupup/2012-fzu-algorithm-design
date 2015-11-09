@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShortestPath", "ShortestPath\ShortestPath.vcxproj", "{4F617D45-926A-4725-9B11-618484806A30}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiringProblem", "WiringProblem\WiringProblem.vcxproj", "{50CD0880-97F1-4751-AF8D-2C1FB121ACC9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01Knapsack", "01Knapsack\01Knapsack.vcxproj", "{E857A81C-8AFD-4960-8A70-246B745AB352}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MaxClique", "MaxClique\MaxClique.vcxproj", "{7CEE89D5-8481-4D0E-A7D0-244AC1D338CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TravelingSalesman", "TravelingSalesman\TravelingSalesman.vcxproj", "{F3C23391-2D56-448F-A89B-44CC7AA03E41}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CircuitBoardArrangement", "CircuitBoardArrangement\CircuitBoardArrangement.vcxproj", "{04475FAA-DE59-44B6-B652-4E1F6E78722F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchJobScheduling", "BatchJobScheduling\BatchJobScheduling.vcxproj", "{0A92C370-B9B9-4EEF-86A7-18435697AE43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F617D45-926A-4725-9B11-618484806A30}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4F617D45-926A-4725-9B11-618484806A30}.Debug|Win32.Build.0 = Debug|Win32
+		{4F617D45-926A-4725-9B11-618484806A30}.Release|Win32.ActiveCfg = Release|Win32
+		{4F617D45-926A-4725-9B11-618484806A30}.Release|Win32.Build.0 = Release|Win32
+		{50CD0880-97F1-4751-AF8D-2C1FB121ACC9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{50CD0880-97F1-4751-AF8D-2C1FB121ACC9}.Debug|Win32.Build.0 = Debug|Win32
+		{50CD0880-97F1-4751-AF8D-2C1FB121ACC9}.Release|Win32.ActiveCfg = Release|Win32
+		{50CD0880-97F1-4751-AF8D-2C1FB121ACC9}.Release|Win32.Build.0 = Release|Win32
+		{E857A81C-8AFD-4960-8A70-246B745AB352}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E857A81C-8AFD-4960-8A70-246B745AB352}.Debug|Win32.Build.0 = Debug|Win32
+		{E857A81C-8AFD-4960-8A70-246B745AB352}.Release|Win32.ActiveCfg = Release|Win32
+		{E857A81C-8AFD-4960-8A70-246B745AB352}.Release|Win32.Build.0 = Release|Win32
+		{7CEE89D5-8481-4D0E-A7D0-244AC1D338CF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7CEE89D5-8481-4D0E-A7D0-244AC1D338CF}.Debug|Win32.Build.0 = Debug|Win32
+		{7CEE89D5-8481-4D0E-A7D0-244AC1D338CF}.Release|Win32.ActiveCfg = Release|Win32
+		{7CEE89D5-8481-4D0E-A7D0-244AC1D338CF}.Release|Win32.Build.0 = Release|Win32
+		{F3C23391-2D56-448F-A89B-44CC7AA03E41}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3C23391-2D56-448F-A89B-44CC7AA03E41}.Debug|Win32.Build.0 = Debug|Win32
+		{F3C23391-2D56-448F-A89B-44CC7AA03E41}.Release|Win32.ActiveCfg = Release|Win32
+		{F3C23391-2D56-448F-A89B-44CC7AA03E41}.Release|Win32.Build.0 = Release|Win32
+		{04475FAA-DE59-44B6-B652-4E1F6E78722F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04475FAA-DE59-44B6-B652-4E1F6E78722F}.Debug|Win32.Build.0 = Debug|Win32
+		{04475FAA-DE59-44B6-B652-4E1F6E78722F}.Release|Win32.ActiveCfg = Release|Win32
+		{04475FAA-DE59-44B6-B652-4E1F6E78722F}.Release|Win32.Build.0 = Release|Win32
+		{0A92C370-B9B9-4EEF-86A7-18435697AE43}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A92C370-B9B9-4EEF-86A7-18435697AE43}.Debug|Win32.Build.0 = Debug|Win32
+		{0A92C370-B9B9-4EEF-86A7-18435697AE43}.Release|Win32.ActiveCfg = Release|Win32
+		{0A92C370-B9B9-4EEF-86A7-18435697AE43}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
