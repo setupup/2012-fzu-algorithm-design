@@ -573,6 +573,693 @@ public:
 			}
 		}
 	}
+};//Page 267
+template<class Graph,class Edge> 
+class LOWER
+{// the MINFLOW problem with the lower bound constraint
+	const Graph& G;
+public:
+	LOWER(Graph& G, int s, int t, vector<int> sd) : G(G)
+	{
+		int maxflow = 0;
+		feasible(G, s, t, sd);
+		adjIterator<Edge> A(G, s);
+		for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			if (e->from(s))
+				maxflow += e->flow();
+		}
+		MAXFLOW<Graph, Edge>(G, s, t, maxflow);
+		cout << endl << "Maxflow =" << maxflow << endl << endl;
+		G.outflow();
+	}
+};
+//How to define the flow cost
+template<class Graph,class Edge>
+static int cost(Graph& G)
+{
+	int x = 0;
+	for (int v = 0; v < G.V(); v++)
+	{
+		adjIterator<Edge> A(G, v);
+		for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			if (e->from(v) && e->costRto(e->w()) < INT_MAX)
+				x += e->flow()*e->costRto(e - w());
+		}
+	}
+	return x;
+}
+//Circle Elimination Algorithm  //neglect cycle
+int costRto(int v)
+{
+	return from(v) ? -pcost : pcost;
+}
+template<classs Graph,class Edge> 
+class MINCOST
+{
+	Graph& G;
+	int s, t;
+	vector<int> wt;
+	vector<Edge*> st;
+public:
+	MINCOST(Graph& G, int s, int t) :
+		G(G), s(s), t(t), st(G.V()), wt(G.V())
+	{
+		int flow = 0;
+		MAXFLOW<Graph, Edge>(G, s, t, flow);
+		for (int x = negcyc(); x != -1; x = negcyc())
+			augment(x, x);
+	}
+	int negcyc()
+	{
+		for (int i = 0; i < G.V(); i++)
+		{
+			int neg = negcyc(i);
+			if (neg >= 0)
+				return neg;
+		}
+		return -1;
+	}
+	int negcyc(int ss)
+	{
+		st.assign(G.V(),0);
+		wt.assign(G.V(), INT_MAX);
+		QUEUE<int> Q(2 * G.V());
+		int N = 0;
+		wt[ss] = 0.0 ;
+		Q.put(ss);
+		Q.put(G.V());
+		while (!Q.empty())
+		{
+			int v;
+			while ((v = Q.get()) == G.V())
+			{
+				if (N++ > G.V())
+					return -1;
+				Q.put(G.V());
+			}
+			adjIterator<Edge> A(G.v);
+			for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+			{
+				int w = e->other(v);
+				if (e->capRto(w) == 0)
+					continue;
+				double P = wt[v] + e->wt(w);
+				if (P < wt[w])
+				{
+					wt[w] = P;
+					//begin to search for the negative cycle
+					for (int node_test = v; (st[node_test] != 0 && node_test != ss); node_test = ST(node_test))
+					{
+						if (ST(node_test) == w)
+						{
+							st[w] = e; return w;
+						}
+					}
+					st[w] = e; Q.put(w);
+				}
+			}
+		}
+		return -1;
+	}
+	int ST(int v) const{
+		if (st[v] == 0)
+		{
+			cout << "error!" << endl; return 0;
+		}
+		else{
+			return st[v]->other(v);
+		}
+	}
+	void augment(int s, int t)
+	{
+		int d = st[t]->capRto(t);
+		for (int v = ST(t); v != s; v = ST(v))
+		{
+			if (st[v]->capRto(v) < d)
+				d = st[v]->capRto(v);
+			st[t]->addflowRto(t, d);
+			for (v = ST(t); v != s; v = ST(v))
+				st[v]->addflowRto(v, d);
+		}
+	}
+};
+//MINIMAL COST PATH Algorithm
+template<class Graph,class Edge>
+class MINCOST{
+	Graph& G;
+	int s, t, flow;
+	vector<int> wt;
+	vector<Edge*> st;
+public:
+	MINCOST(Graph& G, int s, int t, int se) :
+		G(G), s(s), t(t), flow(se), st(G.V()), wt(G.V())
+	{
+		while (shortest())
+			augment(s, t);
+	}
+	bool shortest()
+	{
+		st.assign(G.V(), 0);
+		wt.assign(G.V(), INT_MAX);
+		QUEUE<int>Q(2 * G.V());
+		int N = 0;
+		if (flow <= 0)
+			return false;
+		wt[s] = 0.0;
+		Q.put(s); Q.put(G.V());
+		while (!Q.empty())
+		{
+			int v;
+			while ((v = Q.get()) == G.V())
+			{
+				if (N++ > G.V())
+					return (wt[t] < INT_MAX);
+				Q.put(G.V());
+			}
+			adjIterator<Edge> A(G, v);
+			for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+			{
+				int w = e->other(v);
+				if (e->capRto(w) == 0)
+					continute;
+				int P = wt[v] + e->wt(w);
+				if (P < wt[w])
+				{
+					wt[w] = P;
+					st[w] = e;
+					Q.put(w);
+				}
+			}
+		}
+		return (wt[t] < INT_MAX);
+	}
+	int ST(int v) const
+	{
+		if (st[v] == 0)
+		{
+			cout << "error!" << endl;
+			return 0;
+		}
+		else
+			return st[v]->other(v);
+	}
+	void augment(int s, int t)
+	{
+		int d = st[t]->capRto(t);
+		for (int v = ST(t); v != s; v = ST(v))
+		{
+			if (st[v]->capRto(v) < d)
+				d = st[v]->capRto(v);
+		}
+		if (d>flow)
+			d = flow;
+		st[t]->addflowRto(t, d);
+		for (v = ST(t); v != s; v = ST(v))
+			st[v]->addflowRto(v, d);
+		flow -= d;
+	}
+};
+//networkSimplex algorithm
+template<class Graph,class Edge>
+class MINCOST{
+	const Graph& G;
+	int s, t, valid;
+	vector<Edge*> st;
+	vector<int> mark, phi;
+public:
+	MINCOST(Graph& G, int s, int t, int se) :
+		G(G), s(s), t(t), st(G.V()), mark(G.V(), -1), phi(G.V())
+	{
+		int m, c;
+		upbound(m, c);
+		m = m*G.V();
+		c = c*G.V();
+		Edge* z = new EDGE(s, t, se, c);
+		G.insert(z);
+		z->addflowRto(t, se);
+		dfsR(z, t);
+		for (valid = 1;; valid++)
+		{
+			phi[t] = z->costRto(s);
+			mark[t] = valid;
+			for (int v = 0; v < G.V(); v++)
+			{
+				if (v != t)
+					phi[v] = phiR(v);
+			}
+			Edge* x = besteligible();
+			int rcost = costR(x, x->v());
+			if (full(x) && rcost <= 0 || empty(x) && rcost >= 0)
+				break;
+			update(augment(x), x);
+		}
+		G.remove(z);
+		delete z;
+	}
+	void upbound(int& cap, int& cost)
+	{
+		cap = 0; cost = 0;
+		for (int i = 0; i < G.V(); i++)
+		{
+			for (int j = 0; j < G.V(); j++)
+			{
+				if (G.edge(v, w) && cap < G.edge(v, w)->cap())
+					cap = G.edge(v, w)->cap();
+				if (G.edge(v, w) && cost < G.edge(v, w)->cost())
+					cost = G.edge(v, w)->cost();
+			}
+		}
+	}
+	void dfsR(Edge* e, int w)
+	{
+		int v = e->other(w);
+		st[v] = e;
+		mark[v] = 1;
+		mark[w] = 1;
+		dfs(v);
+		dfs(w);
+		mark.assign(G.V(), -1;
+	}
+	void dfs(int v)
+	{
+		adjIterator<Edge> A(G, v);
+		for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			int w = e->other(v);
+			if (mark[w] == -1)
+			{
+				st[w] = e;
+				mark[w] = 1;
+				dfs(w);
+			}
+		}
+	}
+	int ST(int v) const
+	{
+		if (st[v] == 0) return 0;
+		else
+			return st[v]->other(v);
+	}
+	int phiR(int v)
+	{
+		if (mark[v] == valid)
+			return phi[v];
+		phi[v] = phiR(ST(v)) - st[v]->costRto(v);
+		mark[v] = valid;
+		return phi[v];
+	}
+	int costR(Edge* e, int v)
+	{
+		int R = e->cost() + phi[e->w()] - phi[e->v()];
+		return e->from(v) ? R : -R;
+	}
+	Edge* besteligible()
+	{
+		Edge* x = 0;
+		for (int v = 0, min = INT_MAX; v < G.V(); v++)
+		{
+			adjIterator<Edge> A(G, v);
+			for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+			{
+				if (e->capRto(e->other(v))>0)
+				{
+					if (e->capRto(v) == 0)
+					{
+						if (costR(e, v) < min)
+						{
+							x = e;
+							min = costR(e, v);
+						}
+					}
+				}
+			}
+		}
+		return x;
+	}
+	Edge* augment(Edge* x)
+	{
+		int v = full(x) ? x->w():x->v();
+		int w = x->other(v);
+		int r = lca(v, w);
+		int d = x->capRto(w);
+		for (int u = w; u != r; u = ST(u))
+		{
+			if (st[u]->capRto(ST(u)) < d)
+				d = st[u]->capRto(ST(u));
+		}
+		for (u = v; u != r; u = ST(u))
+		{
+			if (st[u]->capRto(u) < d)
+				d = st[u]->capRto(u);
+		}
+		x->addflowRto(w, d);
+		Edge* e = x;
+		for (u = w; u != r; u = ST(u))
+		{
+			st[u]->addflowRto(ST(u), d);
+			if (st[u]->capRto(ST(u)) == 0)
+				e = st[u];
+		}
+		for (u = v; u != r; u = ST(u))
+		{
+			st[u]->addflowRto(u, d);
+			if (st[u]->capRto(u) == 0)
+				e = st[u];
+	}
+		return e;
+	}
+	bool full(Edge* x)
+	{
+		return (x - .capRto(x->w()) == 0);
+	}
+	bool empty(Edge* x)
+	{
+		return (x->capRto(x->v()) == 0);
+	}
+	int lca(int v, int w)
+	{
+		mark[v] = ++valid;
+		mark[w] = valid;
+		while (v != w)
+		{
+			if (v != t)
+				v = ST(v);
+			if (v != t&&mark[v] == valid)
+				return v;
+			makr[v] = valid;
+			if (w != t)
+				w = ST(w);
+			if (w != t&&mark[w] = -valid)
+				return w;
+			mark[w] = valid;
+		}
+		return v;
+	}
+	bool onpath(int a, int b, int c)
+	{
+		for (int i = a; i != c; i = ST(i))
+		{
+			if (i == b)
+				return true;
+		}
+		return false;
+	}
+	void reverse(int u, int x)
+	{
+		Edge* e = st[u];
+		for (int i = ST(u); e->other(i) != x; i = e->other(i))
+		{
+			Edge* y = st[i];
+			st[i] = e;
+			e = y;
+		}
+	}
+	void update(Edge* w, Edge* y)
+	{
+		if (w == y)
+			return;
+		int u = y->w(), v = y->v(), x = w->w();
+		if (x == t || st[x] != w)
+			x = w->v();
+		int r = lca(u, v);
+		if (onpath(u, x, r))
+		{
+			reverse(u, x);
+			st[u] = y;
+			return;
+		}
+		if (onpath(v, x, r))
+		{
+			reverse(v, x);
+			st[v] = y;
+			return;
+		}
+	}
+};
+//Minimal cost flow's transformation and application
+//Minimal cost flow with the lower bound constraint
+template<class Graph,class Edge> 
+class LOWER
+{
+	const Graph& G;
+public:
+	LOWER(Graph& G, int s, int t, int se, int te, vector<int> sd) : G(G)
+	{
+		int maxflow = 0;
+		feasible(G, s, t, sd);
+		adjIterator<Edge> A(G, s);
+		for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			if (e->from(s))
+				maxflow += e->flow();
+		}
+		MINCOST<GRAPH<EDGE>, EDGE>(G, s, t, se);
+		G.outflow();
+	}
+};
+//Minimal cost and minimal flow with the lower bound constraint
+template<class Graph,class Edge> 
+class LOWER
+{
+	const Graph& G;
+public:
+	LOWER(Graph& G, int s, int t, int se, int te, vector<int> sd) :G(G)
+	{
+		int maxflow = 0;
+		feasible(G, s, t, sd);
+		adjIterator<Edge> A(G, s);
+		for (Edge* e = A.beg; !A.end(); e = A.nxt())
+		{
+			if (e->from(s))
+				maxflow -= e->flow();
+		}
+		MINCOST<GRAPH<EDGE>, EDGE>(G, t, s, se);
+		G.outflow();
+	}
+};
+//Minimal weight binary match(Assignment) problem
+template<class Graph,class Edge>
+class ASSIGNEMNT
+{
+	const Graph& G;
+public:
+	ASSIGNMENT(const Graph& G, int N1) :G(G)
+	{
+		int s, t, sum = 0;
+		Graph G(G.V() + 2, 1);
+		for (int v = 0; v < G.V(); v++)
+		{
+			adjIterator<Edge> A(G, v);
+			for (Edge* e = A.beg(); !A.end(); e = A.nxt())
+			{
+				F.insert(e);
+			}
+		}
+	}
+	s = G.v();
+	t = G.V() + 1;
+	for (int i = 0; i < N1; i++)
+		F.insert(new EDGE(s, i, 1, 0));
+	for (i = N1; i < s; i++)
+		F.insert(new EDGE(i, t, 1, 0));
+	MINCOST<Graph, Edge>(F, s, t, N1);
+	for (i = 0; i < N1; i++)
+	{
+		adjIterator<Edge> A(F, i);
+		for (EDGE* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			if (e->flow() == 1 && e->from(i))
+			{
+				cout << e->v() << "->" << e->w() << endl;
+			}
+		}
+	}
+};
+class ConsecLP
+{//special linear programming problem
+	int ncon; //constraint number
+	int nvar;
+	int** a, s, t, supply;
+public:
+	ConsecLP(char* filename)
+	{
+		read(filename);
+		GRAPH<EDGE> G(ncon + 3, 1);
+		constructG(G);
+		MINCOST<GRAPH<EDGE>, EDGE>(G, s, t, supply);
+		cout << "Mincost=" << cost << GRAPH<EDGE>, EDGE > (G) << endl;
+		G.outx();
+	}
+	void constructG(GRAPH<EDGE>& G)
+	{
+		int i, j, p, q, maxc = 0;
+		a[ncon + 1][0] = 0;
+		for (i = ncon + 1; i > 1; i--)
+			a[i][0] -= a[i - 1][0];
+		for (i = 1; i < ncon; i++)
+		{
+			if (a[i][0]>maxc)
+				maxc += a[i][0];
+		}
+		for (j = 1; j <= nvar; j++)
+		{
+			p = 0; q = 0;
+			for (i = 1; i < ncon; i++)
+			{
+				if ((p == 0) && (a[i][j] == 1))
+					p = i;
+				if ((p>0) && (q == 0) && (a[i][j] == 0))
+					q = i;
+			}
+			if (q == 0)
+				q = ncon + 1;
+			EDGE* e = G.edge(p - 1, q - 1);
+			if (e == 0 || e != 0 && e->cost() > a[0][j])
+				G.insert(new EDGE(p - 1, q - 1, maxc, a[0][j], j));
+		}
+		for (i = 1; i <= ncon;i++)
+			G.insert(new EDGE(i, i - 1, maxc, 0, 0));
+		s = ncon + 1; t = ncon + 2; supply = 0;
+		for (i = 1; i <= ncon; i++)
+		{
+			if (a[i][0] >= 0)
+			{
+				supply += a[i][0];
+				G.insert(new EDGE(s, i - 1, a[i][0], 0, 0));
+			}
+			else
+			{
+				G.insert(new EDGE(i - 1, t, -a[i][0], 0, 0));
+			}
+		}
+	}
+};
+//Minimum Escape Problem
+class ESCAPE
+{
+	int n, mm, nn, f, s, t, *st;
+	int btype(int i, int j)
+	{
+		int b = 0; //indicator
+		if ((i == 1) || (i == mm || (j == 1) || j == nn))
+			b++;
+		if (start(v, w))
+			b += 2;
+		return b;
+	}
+	int num(int i, int j)
+	{
+		if ((i >= 1) && (i <= mm) && (j >= 1) && (j <= nn))
+			return ((i - 1)*nn + j) * 2;
+		else
+			return -1;
+	}
+	int start(int i, int j)
+	{
+		return st[(i - 1)*nn + j];
+	}
+	void constructG(GRAPH<EDGE>& G)
+	{
+		int u[5], v[5];
+		for (int i = 1; i <= mm; i++)
+		{
+			for (int j = 1; j <= nn; j++)
+			{
+				int k = num(v, w);
+				int b = btype(v, w);
+				u[1] = num(i - 1, j); u[2] = num(i, j - 1);
+				u[3] = num(i + 1, j); u[4] = num(i, j + 1);
+				v[1] = btype(i - 1, j); v[2] = btype(i, j - 1);
+				v[3] = btype(i + 1, j); v[4] = btype(i, j + 1);
+				G.insert(new EDGE(k, k + 1, 1, 0));
+				if (b > 1)
+					G.insert(new EDGE(s, k, 1, 0));
+				else
+				{
+					for (int x = 1; x < 5; x++)
+					{
+						if ((u[x]>0) && ((v[x] == 0) || (v[x] == 2)))
+							G.insert(new EDGE(u[x] + 1, k, 1, 1));
+					}
+				}
+				if ((b == 1) || (b == 3))
+					G.insert(new EDGE(k + 1, t, 1, 0));
+			}
+		}
+	}
+	void read(char* filename)
+	{
+		int i, j;
+		ifstream inFile;
+		inFile.open(filename);
+		inFile >> mm >> nn >> f;
+		n = mm*nn * 2 + 2;
+		st = new int[mm*nn + 1];
+		for (i = 0; i <= mm*nn; i++)
+			st[i] = 0;
+		s = 0;
+		t = 1;
+		for (int k = 0; k < f; k++)
+		{
+			inFile >> i >> j;
+			st[(i - 1)*nn + j] = 1;
+		}
+		inFile.close();
+	}
+	void trans(int i, int& u, int& v)
+	{
+		int k = i / 2;
+		u = k / nn;
+		v = k%nn;
+		if (v == 0)
+			v = nn;
+		else
+			u++;
+	}
+	void output(GRAPH<EDGE>& G)
+	{
+		int u1, v1, u2, v2, sum = 0;
+		adjIterator<EDGE> A(G, s);
+		for (EDGE* e = A.beg(); !A.end(); e = A.nxt())
+		{
+			if (e->from(s) && e->flow() > 0)
+				sum++;
+		}
+		if (sum < f)
+		{
+			cout << "No solution" << endl;
+			return;
+		}
+		cout << "successful!" << endl;
+		sum = 0;
+		for (int i = 2; i < n; i++)
+		{
+			adjIterator<EDGE> A(G, i);
+			for (EDGE* e = A.beg(); !A.end(); e = A.nxt())
+			{
+				if (e->from(i) && e->flow()>0 && e->cost() > 0)
+				{
+					trans(i, u1, v1);
+					trans(e->w(), u2, v2);
+					cout << "(" << u1 << "," << v1 << ")-->(" << u2 << "," << v2 << ")" << endl;
+					sum++;
+				}
+			}
+		}
+		cout << "Mincost=" << sum << endl;
+	}
+	public:
+		ESCAPE(char* filename)
+		{
+			read(filename);
+			GRAPH<EDGE> G(n, 1);
+			constructG(G);
+			MINCOST<GRAPH<EDGE>, EDGE>(G, s, t, f);
+			output(G);
+		}
+
 };
 int main(int argc, char* argv[])
 {

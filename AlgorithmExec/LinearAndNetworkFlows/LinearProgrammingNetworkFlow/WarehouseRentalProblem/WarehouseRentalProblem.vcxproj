@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4F617D45-926A-4725-9B11-618484806A30}</ProjectGuid>
+    <ProjectGuid>{ED0745CB-B1F0-4A97-BDEE-B24105B45E04}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WarehouseRentalProblem</RootNamespace>
   </PropertyGroup>

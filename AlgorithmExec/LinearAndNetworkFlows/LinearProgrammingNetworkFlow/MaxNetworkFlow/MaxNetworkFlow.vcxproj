@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4F617D45-926A-4725-9B11-618484806A30}</ProjectGuid>
+    <ProjectGuid>{6A83C189-DA3A-4754-BDC8-F38336370A12}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MaxNetworkFlow</RootNamespace>
   </PropertyGroup>
