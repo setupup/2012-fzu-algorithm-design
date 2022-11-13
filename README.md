@@ -12,3 +12,4 @@
 
 Uploaded: 2015/11
 
+2015/02 (essential cpp) => 2015/04 (TrieInp) => 2015/11 (algorithms) => 2016/07 (cpp errata) => 2017 (atcoder)
